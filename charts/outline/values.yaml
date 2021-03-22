@@ -3,71 +3,51 @@ replicaCount: 1
 image:
   repository: outlinewiki/outline
   pullPolicy: IfNotPresent
-  tag: ""             # Overrides the image tag whose default is the chart appVersion.
+  tag: "version-0.54.0"     # Overrides the image tag whose default is the chart appVersion.
 
 imagePullSecrets: []
-nameOverride: ""
-fullnameOverride: ""
+  # - name: ""
 
-outline:
-  auth:
-    google:
-      allowedDomains:
-        - example.com
-        - example.net
-      clientId: ""
-      clientSecret: ""
-    slack:
-      key: ""
-      secret: ""
-  aws:
-    accessKey: ""
-    secret: ""
-    s3:
-      acl: private    # Set to public-read to allow public access
-      bucket: ""
-      endpoint: ""
-      maxSize: 26214400
-      region: ""
-  containerPort: 3000
-  debug: "sql,cache,presenters,events,logistics,emails,mailer"
-  enableUpdates: true
-  externalUrl: "https://foobar.com/outline"
-  forceHttps: true
-  googleAnalyticsId: ""
-  notifications:
-    slack:
-      appId: ""
-      messageActions: true
-      verificationToken: ""
-  postgresqlUrl: ""   # This is mandatory only if embedded postgresql is disabled
-  redisUrl: ""        # This is mandatory only if embedded redis is disabled
-  secrets:
-    key: foobar
-    utils: foobar
-  sentryDsn: ""
-  smtp:
-    fromEmail: ""
-    host: ""
-    password: ""
-    port: ""
-    replyEmail: ""
-    user: ""
-  teamLogo: ""
-  websocketsEnabled: true
+env:
+  SECRET_KEY: ""
+  UTILS_SECRET: ""
+  DATABASE_URL: ""  # postgres://user:pass@localhost:5532/outline"
+  DATABASE_URL_TEST: ""
+  REDIS_URL: ""  # redis://localhost:6479
+  URL: ""  # http://localhost:3000
+  PORT: "3000"
+  SLACK_KEY: ""  # get_a_key_from_slack
+  SLACK_SECRET: ""  # get_the_secret_of_above_key
+  GOOGLE_CLIENT_ID: ""
+  GOOGLE_CLIENT_SECRET: ""
 
-postgresql:
-  enabled: true
-  imageTag: latest
-  password: foobar
-  port: 5432
-
-redis:
-  enabled: true
-  imageTag: latest
-  port: 6379
-  usePassword: false
-
+  # OPTIONAL
+  CDN_URL: ""
+  FORCE_HTTPS: ""  # true
+  ENABLE_UPDATES: ""  # true
+  DEBUG: ""  # cache,presenters,events,emails,mailer,utils,multiplayer,server,services
+  ALLOWED_DOMAINS: ""
+  SLACK_VERIFICATION_TOKEN: ""  # your_token
+  SLACK_APP_ID: ""  # A0XXXXXXX
+  SLACK_MESSAGE_ACTIONS: ""  # true
+  GOOGLE_ANALYTICS_ID: ""
+  SENTRY_DSN: ""
+  AWS_ACCESS_KEY_ID: ""  # get_a_key_from_aws
+  AWS_SECRET_ACCESS_KEY: ""  # get_the_secret_of_above_key
+  AWS_REGION: ""  # xx-xxxx-x
+  AWS_S3_UPLOAD_BUCKET_URL: ""  # http://s3:4569
+  AWS_S3_UPLOAD_BUCKET_NAME: ""  # bucket_name_here
+  AWS_S3_UPLOAD_MAX_SIZE: ""  # 26214400
+  AWS_S3_FORCE_PATH_STYLE: ""  # true
+  AWS_S3_ACL: ""  # private
+  SMTP_HOST: ""
+  SMTP_PORT: ""
+  SMTP_USERNAME: ""
+  SMTP_PASSWORD: ""
+  SMTP_FROM_EMAIL: ""
+  SMTP_REPLY_EMAIL: ""
+  DEFAULT_LANGUAGE: "en_US"
+  
 serviceAccount:
   create: true
   annotations: {}
@@ -98,13 +78,6 @@ resources:
   requests:
     cpu: 100m
     memory: 128Mi
-
-autoscaling:
-  enabled: true
-  minReplicas: 1
-  maxReplicas: 4
-  targetCPUUtilizationPercentage: 80
-  targetMemoryUtilizationPercentage: 80
 
 nodeSelector: {}
 
